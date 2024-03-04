@@ -1,20 +1,20 @@
 <template>
   <div class="container">
     <div class="header">
-      <h1>仿真实验数据中心</h1>
+      <h1>智慧模拟虚拟实验室平台</h1>
     </div>
     <div class="main">
       <div class="left">
         <div class="section">
-          <h2>仿真时常统计</h2>
+          <h2>使用时常统计</h2>
           <div class="echarts" ref="echartsLeft1"></div>
         </div>
         <div class="section">
-          <h2>近一周仿真使用次数</h2>
+          <h2>近一周使用次数</h2>
           <div class="echarts" ref="echartsLeft2"></div>
         </div>
         <div class="section">
-          <h2>近一周仿真使用时长</h2>
+          <h2>近一周使用时长</h2>
           <div class="echarts" ref="echartsLeft3"></div>
         </div>
       </div>
@@ -22,20 +22,36 @@
         <div class="data">
           <ul>
             <li v-for="item in centerData" :key="item.value">
-              <p>{{ item.value }}</p>
               <p>{{ item.label }}</p>
+              <p>{{ item.value }}</p>
             </li>
           </ul>
         </div>
-        <div ref="echartsCenter" style="width: 100%; height: 100%"></div>
+        <div class="echarts" ref="echartsCenter"></div>
+        <div class="center-rank">
+          <el-table :data="centerRank" style="width: 100%" height="150">
+            <el-table-column prop="index" label="排名" width="100" align="center" />
+            <el-table-column prop="name" label="医院名称" width="180" align="center" />
+            <el-table-column prop="value" label="使用人数" width="180" align="center" />
+            <el-table-column prop="time" label="时间" align="center" />
+          </el-table>
+        </div>
       </div>
       <div class="right">
         <div class="section">
-          <h2>平台仿真使用次数排行</h2>
-          <div class="echarts" ref="echartsRight1"></div>
+          <h2>课程使用时长排行榜</h2>
+          <!-- <div class="echarts" ref="echartsRight1"></div> -->
+          <div class="echarts">
+            <ul class="ranking">
+              <li v-for="item in right1Data" :key="item.value" class="item">
+                <label>{{ item.label }}</label>
+                <span>{{ item.value }}</span>
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="section">
-          <h2>近一年得分统计</h2>
+          <h2>近一年模拟通过率统计</h2>
           <div class="echarts" ref="echartsRight2"></div>
         </div>
         <div class="section">
@@ -61,10 +77,23 @@ const echartsRight2 = ref()
 const echartsRight3 = ref()
 
 const centerData = ref([
-  { label: '累计服务老师', value: '2人次' },
-  { label: '累计服务学生', value: '1人次' },
-  { label: '学习总时长', value: '0.00小时' },
-  { label: '平台访问次数', value: '4次' }
+  { label: '接入课程数', value: '(6个)' },
+  { label: '学员人数', value: '(532人)' },
+  { label: '学习总时长', value: '(982小时)' },
+  { label: '模拟通过率', value: '81%' }
+])
+
+const centerRank = ref([
+  { index: 1, name: '广医附一', value: '40', time: '70' },
+  { index: 2, name: '北医三院', value: '30', time: '60' },
+  { index: 3, name: '中山医院', value: '25', time: '40' },
+  { index: 4, name: '协和医院', value: '60', time: '35' }
+])
+
+const right1Data = ref([
+  { label: '新生儿重症监护', value: '100小时' },
+  { label: '简易呼吸机使用', value: '80小时' },
+  { label: '鼻饲法虚实结合系统', value: '50小时' }
 ])
 
 const dataList = [
@@ -121,18 +150,23 @@ function initLeft1() {
       trigger: 'item'
     },
     legend: {
-      top: '1%'
+      icon: 'square',
+      orient: 'vertical',
+      left: '3%',
+      top: 'center'
     },
+    color: ['#a7b3fa', '#81b4fc', '#5475f5'],
     series: [
       {
         name: '时长统计',
         type: 'pie',
-        radius: ['40%', '70%'],
+        radius: ['60%', '85%'],
+        center: ['68%', '55%'],
         avoidLabelOverlap: false,
         itemStyle: {
-          borderRadius: 10,
+          borderRadius: 2,
           borderColor: '#fff',
-          borderWidth: 2
+          borderWidth: 1
         },
         label: {
           show: false,
@@ -140,7 +174,7 @@ function initLeft1() {
         },
         emphasis: {
           label: {
-            show: true,
+            show: false,
             fontSize: 40,
             fontWeight: 'bold'
           }
@@ -149,9 +183,9 @@ function initLeft1() {
           show: false
         },
         data: [
-          { value: 1048, name: '时长 1' },
-          { value: 735, name: '时长 2' },
-          { value: 580, name: '时长 3' }
+          { value: 1048, name: '医药高等专科-NICU' },
+          { value: 735, name: '医药专科' },
+          { value: 580, name: '医药专科2' }
         ]
       }
     ]
@@ -162,16 +196,20 @@ function initLeft1() {
 function initLeft2() {
   const chart = echarts.init(echartsLeft2.value)
   const option = {
+    grid: {
+      top: '15%',
+      bottom: '10%'
+    },
     xAxis: {
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: ['周一', '周二', '周三', '周四', '周五']
     },
     yAxis: {
       type: 'value'
     },
     series: [
       {
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        data: [5, 7, 11, 16, 19],
         type: 'line',
         smooth: true
       }
@@ -183,35 +221,30 @@ function initLeft2() {
 function initLeft3() {
   const chart = echarts.init(echartsLeft3.value)
   const option = {
-    title: {
-      text: ''
-    },
-    legend: {
-      data: ['Allocated Budget', 'Actual Spending']
-    },
+    // legend: {
+    //   data: ['周一', '周二']
+    // },
     radar: {
       // shape: 'circle',
+      radius: '62%',
       indicator: [
-        { name: 'Sales', max: 6500 },
-        { name: 'Administration', max: 16000 },
-        { name: 'Information Technology', max: 30000 },
-        { name: 'Customer Support', max: 38000 },
-        { name: 'Development', max: 52000 },
-        { name: 'Marketing', max: 25000 }
+        { name: '周一', max: 2 },
+        { name: '周二', max: 2 },
+        { name: '周三', max: 2 },
+        { name: '周四', max: 2 },
+        { name: '周五', max: 2 }
+        // { name: '周六', max: 2 },
+        // { name: '周日', max: 2 }
       ]
     },
     series: [
       {
-        name: 'Budget vs spending',
+        name: '使用时长',
         type: 'radar',
         data: [
           {
-            value: [4200, 3000, 20000, 35000, 50000, 18000],
-            name: 'Allocated Budget'
-          },
-          {
-            value: [5000, 14000, 28000, 26000, 42000, 21000],
-            name: 'Actual Spending'
+            value: [1.2, 1.7, 1.0, 1.5, 1.8],
+            name: ''
           }
         ]
       }
@@ -248,7 +281,7 @@ function initCenter() {
     },
     visualMap: {
       show: true,
-      left: 26,
+      left: 20,
       bottom: 40,
       showLabel: true,
       pieces: [
@@ -294,8 +327,8 @@ function initCenter() {
         min: 1,
         max: 2
       },
-      zoom: 1.2,
-      top: 120,
+      zoom: 1, // 地图缩放比例
+      top: 80,
       layoutSize: '100%', //保持地图宽高比
       roam: false, // 是否可以缩放、拖拽
       silent: true, // 禁用鼠标事件，hover，mouseenter
@@ -383,65 +416,83 @@ function initRight1() {
 function initRight2() {
   const chart = echarts.init(echartsRight2.value)
   const option = {
-    title: {
-      text: ''
-    },
-    tooltip: {
-      trigger: 'axis'
-    },
-    legend: {
-      data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
-    },
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
+      left: 0,
+      right: '5%',
+      bottom: '5%',
+      top: '10%',
       containLabel: true
-    },
-    toolbox: {
-      feature: {
-        saveAsImage: {}
-      }
     },
     xAxis: {
       type: 'category',
-      boundaryGap: false,
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: false
+      },
+      axisLabel: {
+        show: true,
+        color: function (value, index) {
+          if (index == 0) {
+            return 'red'
+          }
+          if (index == 1) {
+            return '#ff8447'
+          }
+          if (index == 2) {
+            return '#ffcc00'
+          }
+          return 'rgb(18,205,12)'
+        },
+        fontSize: 8
+      }
     },
     yAxis: {
-      type: 'value'
+      show: false
     },
     series: [
       {
-        name: 'Email',
-        type: 'line',
-        stack: 'Total',
-        data: [120, 132, 101, 134, 90, 230, 210]
-      },
-      {
-        name: 'Union Ads',
-        type: 'line',
-        stack: 'Total',
-        data: [220, 182, 191, 234, 290, 330, 310]
-      },
-      {
-        name: 'Video Ads',
-        type: 'line',
-        stack: 'Total',
-        data: [150, 232, 201, 154, 190, 330, 410]
-      },
-      {
-        name: 'Direct',
-        type: 'line',
-        stack: 'Total',
-        data: [320, 332, 301, 334, 390, 330, 320]
-      },
-      {
-        name: 'Search Engine',
-        type: 'line',
-        stack: 'Total',
-        data: [820, 932, 901, 934, 1290, 1330, 1320]
+        type: 'bar',
+        stack: 'chart',
+        barWidth: '24',
+        itemStyle: {
+          normal: {
+            color: new echarts.graphic.LinearGradient(1, 0, 0, 1, [
+              {
+                offset: 0,
+                color: '#2A6BCD'
+              },
+              {
+                offset: 1,
+                color: '#34F6F8'
+              }
+            ])
+          }
+        },
+        label: {
+          normal: {
+            // position: 'left',
+            fontSize: 10,
+            show: true,
+            color: 'white',
+            formatter: '{c}%'
+          }
+        },
+        data: [60, 65, 70, 68, 72, 76, 80, 66, 60, 80, 68, 83]
       }
+      // {
+      //   type: 'bar',
+      //   stack: 'chart',
+      //   barWidth: '24',
+      //   itemStyle: {
+      //     normal: {
+      //       color: '#0D2253'
+      //     }
+      //   },
+      //   data: [40, 35, 30, 32, 28, 24, 20, 34, 40, 20, 32, 18]
+      // }
     ]
   }
   chart.setOption(option)
@@ -450,98 +501,65 @@ function initRight2() {
 function initRight3() {
   const chart = echarts.init(echartsRight3.value)
   const option = {
-    title: {
-      text: ''
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985'
-        }
-      }
-    },
-    legend: {
-      data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
-    },
-    toolbox: {
-      feature: {
-        saveAsImage: {}
-      }
-    },
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
+      left: '5%',
+      right: '5%',
+      bottom: '5%',
+      top: '20%',
       containLabel: true
     },
-    xAxis: [
-      {
-        type: 'category',
-        boundaryGap: false,
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    xAxis: {
+      type: 'category',
+      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: false
+      },
+      axisLabel: {
+        show: true,
+        fontSize: 8
       }
-    ],
-    yAxis: [
-      {
-        type: 'value'
+    },
+    yAxis: {
+      type: 'value',
+      name: '小时',
+      nameTextStyle: {
+        //  单位样式
+        color: '#666', //  字体颜色
+        fontSize: 12, //  字体大小
+        padding: [0, 25, 0, 0] //  内填充
       }
-    ],
+    },
     series: [
       {
-        name: 'Email',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
+        type: 'bar',
+        stack: 'chart',
+        barWidth: '20',
+        itemStyle: {
+          normal: {
+            color: new echarts.graphic.LinearGradient(1, 0, 0, 1, [
+              {
+                offset: 0,
+                color: '#2A6BCD'
+              },
+              {
+                offset: 1,
+                color: '#34F6F8'
+              }
+            ])
+          }
         },
-        data: [120, 132, 101, 134, 90, 230, 210]
-      },
-      {
-        name: 'Union Ads',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [220, 182, 191, 234, 290, 330, 310]
-      },
-      {
-        name: 'Video Ads',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [150, 232, 201, 154, 190, 330, 410]
-      },
-      {
-        name: 'Direct',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [320, 332, 301, 334, 390, 330, 320]
-      },
-      {
-        name: 'Search Engine',
-        type: 'line',
-        stack: 'Total',
         label: {
-          show: true,
-          position: 'top'
+          normal: {
+            // position: 'left',
+            fontSize: 10,
+            show: true,
+            color: 'white'
+          }
         },
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [820, 932, 901, 934, 1290, 1330, 1320]
+        data: [35, 37, 40, 42, 45, 41, 39, 38, 40, 37, 42, 44]
       }
     ]
   }
@@ -554,7 +572,7 @@ onMounted(() => {
   initLeft2()
   initLeft3()
   initCenter()
-  initRight1()
+  // initRight1()
   initRight2()
   initRight3()
 })
@@ -567,11 +585,16 @@ onMounted(() => {
   width: 100%;
   height: 100vh;
   position: relative;
+  overflow: hidden;
 }
 .header {
   height: 50px;
   line-height: 50px;
   text-align: center;
+}
+h1 {
+  color: #5475f5;
+  font-weight: bold;
 }
 .main {
   flex: 1;
@@ -605,6 +628,11 @@ onMounted(() => {
 .center .data ul li {
   flex: 1;
 }
+.center-rank {
+  height: 170px;
+  padding-bottom: 20px;
+}
+
 .right {
   width: 400px;
   height: 100%;
@@ -628,5 +656,29 @@ h2 {
 }
 .echarts {
   flex: 1;
+}
+
+.ranking {
+  height: 100%;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.item {
+  padding: 10px 0;
+}
+.item label {
+  display: inline-block;
+  margin-right: 20px;
+  width: 140px;
+}
+
+.el-table thead {
+  color: #77a2fc;
+  font-weight: bold;
+}
+.el-table {
+  color: #4f7bd8;
 }
 </style>
