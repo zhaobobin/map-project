@@ -22,8 +22,8 @@
         <div class="data">
           <ul>
             <li v-for="item in centerData" :key="item.value">
-              <p>{{ item.label }}</p>
-              <p>{{ item.value }}</p>
+              <p class="label">{{ item.label }}</p>
+              <p class="value">{{ item.value }}</p>
             </li>
           </ul>
         </div>
@@ -78,9 +78,9 @@ const echartsRight3 = ref()
 
 const centerData = ref([
   { label: '接入课程数', value: '(6个)' },
-  { label: '学员人数', value: '(532人)' },
-  { label: '学习总时长', value: '(982小时)' },
-  { label: '模拟通过率', value: '81%' }
+  { label: '学员人数', value: '(200人)' },
+  { label: '学习总时长', value: '(600小时)' },
+  { label: '模拟通过率', value: '72%' }
 ])
 
 const centerRank = ref([
@@ -91,9 +91,9 @@ const centerRank = ref([
 ])
 
 const right1Data = ref([
-  { label: '新生儿重症监护', value: '100小时' },
-  { label: '简易呼吸机使用', value: '80小时' },
-  { label: '鼻饲法虚实结合系统', value: '50小时' }
+  { label: '1. 新生儿重症监护', value: '150小时' },
+  { label: '2. 简易呼吸机使用', value: '120小时' },
+  { label: '3. 鼻饲法虚实结合系统', value: '100小时' }
 ])
 
 const dataList = [
@@ -155,7 +155,7 @@ function initLeft1() {
       left: '3%',
       top: 'center'
     },
-    color: ['#a7b3fa', '#81b4fc', '#5475f5'],
+    color: ['#a7b3fa', '#81b4fc', '#5475f5', '#83d8fb'],
     series: [
       {
         name: '时长统计',
@@ -169,12 +169,13 @@ function initLeft1() {
           borderWidth: 1
         },
         label: {
-          show: false,
-          position: 'center'
+          show: false, // 开启标签显示
+          position: 'inside',
+          formatter: '{c}' // 自定义标签格式化函数 {b}: {c} ({d}%)
         },
         emphasis: {
           label: {
-            show: false,
+            // show: false,
             fontSize: 40,
             fontWeight: 'bold'
           }
@@ -183,9 +184,10 @@ function initLeft1() {
           show: false
         },
         data: [
-          { value: 1048, name: '医药高等专科-NICU' },
-          { value: 735, name: '医药专科' },
-          { value: 580, name: '医药专科2' }
+          { value: 150, name: '新生儿重症监护' },
+          { value: 120, name: '简易呼吸机使用' },
+          { value: 100, name: '鼻饲法虚实结合系统' },
+          { value: 110, name: '其他' }
         ]
       }
     ]
@@ -198,7 +200,7 @@ function initLeft2() {
   const option = {
     grid: {
       top: '15%',
-      bottom: '10%'
+      bottom: '15%'
     },
     xAxis: {
       type: 'category',
@@ -328,7 +330,7 @@ function initCenter() {
         max: 2
       },
       zoom: 1, // 地图缩放比例
-      top: 80,
+      top: '15%',
       layoutSize: '100%', //保持地图宽高比
       roam: false, // 是否可以缩放、拖拽
       silent: true, // 禁用鼠标事件，hover，mouseenter
@@ -416,6 +418,15 @@ function initRight1() {
 function initRight2() {
   const chart = echarts.init(echartsRight2.value)
   const option = {
+    title: {
+      text: '2023年3月-2024年2月',
+      left: 'center',
+      textStyle: {
+        fontSize: 12,
+        color: '#666',
+        fontWeight: 400
+      }
+    },
     grid: {
       left: 0,
       right: '5%',
@@ -425,7 +436,7 @@ function initRight2() {
     },
     xAxis: {
       type: 'category',
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+      data: ['3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月', '1月', '2月'],
       axisTick: {
         show: false
       },
@@ -501,6 +512,15 @@ function initRight2() {
 function initRight3() {
   const chart = echarts.init(echartsRight3.value)
   const option = {
+    title: {
+      text: '2023年3月-2024年2月',
+      left: 'center',
+      textStyle: {
+        fontSize: 12,
+        color: '#666',
+        fontWeight: 400
+      }
+    },
     grid: {
       left: '5%',
       right: '5%',
@@ -510,7 +530,7 @@ function initRight3() {
     },
     xAxis: {
       type: 'category',
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+      data: ['3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月', '1月', '2月'],
       axisTick: {
         show: false
       },
@@ -602,13 +622,13 @@ h1 {
   flex-direction: row;
 }
 .left {
-  width: 400px;
+  width: 27%;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 .center {
-  flex: 1;
+  width: 46%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -628,13 +648,20 @@ h1 {
 .center .data ul li {
   flex: 1;
 }
+.center .data ul li .label {
+  color: #77a2fc;
+  font-weight: bold;
+}
+.center .data ul li .value {
+  color: #4f7bd8;
+}
 .center-rank {
   height: 170px;
   padding-bottom: 20px;
 }
 
 .right {
-  width: 400px;
+  width: 27%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -667,11 +694,12 @@ h2 {
 }
 .item {
   padding: 10px 0;
+  color: #4f7bd8;
 }
 .item label {
   display: inline-block;
   margin-right: 20px;
-  width: 140px;
+  width: 160px;
 }
 
 .el-table thead {
