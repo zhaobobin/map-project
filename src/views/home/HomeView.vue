@@ -97,16 +97,6 @@ const right1Data = ref([
 ])
 
 const dataList = [
-  {
-    name: '南海诸岛',
-    value: 100,
-    eventTotal: 100,
-    specialImportant: 10,
-    import: 10,
-    compare: 10,
-    common: 40,
-    specail: 20
-  },
   { name: '北京', value: 1540 },
   { name: '天津', value: 130 },
   { name: '上海', value: 400 },
@@ -138,9 +128,7 @@ const dataList = [
   { name: '四川', value: 44 },
   { name: '宁夏', value: 42 },
   { name: '海南', value: 22 },
-  { name: '台湾', value: 23 },
-  { name: '香港', value: 25 },
-  { name: '澳门', value: 555 }
+  { name: '台湾', value: 23 }
 ]
 
 function initLeft1() {
@@ -153,7 +141,10 @@ function initLeft1() {
       icon: 'square',
       orient: 'vertical',
       left: '3%',
-      top: 'center'
+      top: 'center',
+      textStyle: {
+        color: '#fff'
+      }
     },
     color: ['#a7b3fa', '#81b4fc', '#5475f5', '#83d8fb'],
     series: [
@@ -255,6 +246,7 @@ function initLeft3() {
   chart.setOption(option)
 }
 
+// 地图
 function initCenter() {
   // 基于准备好的dom，初始化echarts实例
   const chart = echarts.init(echartsCenter.value)
@@ -323,45 +315,273 @@ function initCenter() {
         }
       ]
     },
-    geo: {
-      map: 'china',
-      scaleLimit: {
-        min: 1,
-        max: 2
-      },
-      zoom: 1, // 地图缩放比例
-      top: '15%',
-      layoutSize: '100%', //保持地图宽高比
-      roam: false, // 是否可以缩放、拖拽
-      silent: true, // 禁用鼠标事件，hover，mouseenter
-      label: {
-        normal: {
-          show: false, // 是否显示省份名称
-          fontSize: '14',
-          color: 'rgba(0,0,0,0.7)'
+    geo: [
+      {
+        map: 'china',
+        scaleLimit: {
+          min: 1,
+          max: 2
         },
-        emphasis: {
-          show: false,
-          textStyle: {
-            color: '#F3F3F3'
+        zoom: 1, // 地图缩放比例
+        top: '13%',
+        z: 5,
+        layoutSize: '100%', //保持地图宽高比
+        roam: false, // 是否可以缩放、拖拽
+        silent: false, // 禁用鼠标事件，hover，mouseenter
+        regions: [
+          {
+            name: '南海诸岛',
+            itemStyle: {
+              normal: {
+                opacity: 0 // 设置为0使其不可见
+              }
+            },
+            label: {
+              show: false // 隐藏文字标签
+            }
+          }
+        ],
+        label: {
+          normal: {
+            show: false, // 是否显示省份名称
+            fontSize: '14',
+            color: 'rgba(0,0,0,0.7)'
+          },
+          emphasis: {
+            show: false,
+            textStyle: {
+              color: '#F3F3F3'
+            }
+          }
+        },
+        itemStyle: {
+          normal: {
+            //shadowBlur: 50,
+            //shadowColor: 'rgba(0, 0, 0, 0.2)',
+            borderColor: 'rgba(0, 0, 0, 0.3)',
+            areaColor: 'rgb(48,83,160)'
+          },
+          emphasis: {
+            areaColor: '#a6fdf3', // 鼠标hover颜色
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            borderWidth: 0
           }
         }
       },
-      itemStyle: {
-        normal: {
-          //shadowBlur: 50,
-          //shadowColor: 'rgba(0, 0, 0, 0.2)',
-          borderColor: 'rgba(0, 0, 0, 0.2)',
-          areaColor: '#1955a4'
+      {
+        map: 'china',
+        scaleLimit: {
+          min: 1,
+          max: 2
         },
-        emphasis: {
-          areaColor: '#a6fdf3', // 鼠标hover颜色
-          shadowOffsetX: 0,
-          shadowOffsetY: 0,
-          borderWidth: 0
+        zoom: 1, // 地图缩放比例
+        top: '13.5%',
+        z: 4,
+        layoutSize: '100%', //保持地图宽高比
+        roam: false, // 是否可以缩放、拖拽
+        silent: true, // 禁用鼠标事件，hover，mouseenter
+        regions: [
+          {
+            name: '南海诸岛',
+            itemStyle: {
+              normal: {
+                opacity: 0 // 设置为0使其不可见
+              }
+            },
+            label: {
+              show: false // 隐藏文字标签
+            }
+          }
+        ],
+        label: {
+          normal: {
+            show: false, // 是否显示省份名称
+            fontSize: '14',
+            color: 'rgba(0,0,0,0.7)'
+          },
+          emphasis: {
+            show: false,
+            textStyle: {
+              color: '#F3F3F3'
+            }
+          }
+        },
+        itemStyle: {
+          normal: {
+            // shadowBlur: 50,
+            // borderColor: 'rgba(0, 0, 0, 0.5)',
+            shadowColor: 'rgba(0, 0, 0, 0.2)',
+            areaColor: 'rgb(7,34,119)'
+          },
+          emphasis: {
+            areaColor: '#a6fdf3', // 鼠标hover颜色
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            borderWidth: 0
+          }
+        }
+      },
+      {
+        map: 'china',
+        scaleLimit: {
+          min: 1,
+          max: 2
+        },
+        zoom: 1, // 地图缩放比例
+        top: '14%',
+        z: 3,
+        layoutSize: '100%', //保持地图宽高比
+        roam: false, // 是否可以缩放、拖拽
+        silent: true, // 禁用鼠标事件，hover，mouseenter
+        regions: [
+          {
+            name: '南海诸岛',
+            itemStyle: {
+              normal: {
+                opacity: 0 // 设置为0使其不可见
+              }
+            },
+            label: {
+              show: false // 隐藏文字标签
+            }
+          }
+        ],
+        label: {
+          normal: {
+            show: false, // 是否显示省份名称
+            fontSize: '14',
+            color: 'rgba(0,0,0,0.7)'
+          },
+          emphasis: {
+            show: false,
+            textStyle: {
+              color: '#F3F3F3'
+            }
+          }
+        },
+        itemStyle: {
+          normal: {
+            // shadowBlur: 50,
+            // borderColor: 'rgba(0, 0, 0, 0.2)',
+            shadowColor: 'rgba(0, 0, 0, 0.1)',
+            areaColor: 'rgb(7,31,142)'
+          },
+          emphasis: {
+            areaColor: '#a6fdf3', // 鼠标hover颜色
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            borderWidth: 0
+          }
+        }
+      },
+      {
+        map: 'china',
+        scaleLimit: {
+          min: 1,
+          max: 2
+        },
+        zoom: 1, // 地图缩放比例
+        top: '14.5%',
+        z: 2,
+        layoutSize: '100%', //保持地图宽高比
+        roam: false, // 是否可以缩放、拖拽
+        silent: true, // 禁用鼠标事件，hover，mouseenter
+        regions: [
+          {
+            name: '南海诸岛',
+            itemStyle: {
+              normal: {
+                opacity: 0 // 设置为0使其不可见
+              }
+            },
+            label: {
+              show: false // 隐藏文字标签
+            }
+          }
+        ],
+        label: {
+          normal: {
+            show: false, // 是否显示省份名称
+            fontSize: '14',
+            color: 'rgba(0,0,0,0.7)'
+          },
+          emphasis: {
+            show: false,
+            textStyle: {
+              color: '#F3F3F3'
+            }
+          }
+        },
+        itemStyle: {
+          normal: {
+            // shadowBlur: 50,
+            // borderColor: 'rgba(0, 0, 0, 0.2)',
+            shadowColor: 'rgba(0, 0, 0, 0.1)',
+            areaColor: 'rgb(6,30,162)'
+          },
+          emphasis: {
+            areaColor: '#a6fdf3', // 鼠标hover颜色
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            borderWidth: 0
+          }
+        }
+      },
+      {
+        map: 'china',
+        scaleLimit: {
+          min: 1,
+          max: 2
+        },
+        zoom: 1, // 地图缩放比例
+        top: '15%',
+        z: 1,
+        layoutSize: '100%', //保持地图宽高比
+        roam: false, // 是否可以缩放、拖拽
+        silent: true, // 禁用鼠标事件，hover，mouseenter
+        regions: [
+          {
+            name: '南海诸岛',
+            itemStyle: {
+              normal: {
+                opacity: 0 // 设置为0使其不可见
+              }
+            },
+            label: {
+              show: false // 隐藏文字标签
+            }
+          }
+        ],
+        label: {
+          normal: {
+            show: false, // 是否显示省份名称
+            fontSize: '14',
+            color: 'rgba(0,0,0,0.7)'
+          },
+          emphasis: {
+            show: false,
+            textStyle: {
+              color: '#F3F3F3'
+            }
+          }
+        },
+        itemStyle: {
+          normal: {
+            // shadowBlur: 50,
+            // borderColor: 'rgba(0, 0, 0, 0.2)',
+            shadowColor: 'rgba(0, 0, 0, 0.1)',
+            areaColor: 'rgb(17,137,208)'
+          },
+          emphasis: {
+            areaColor: '#a6fdf3', // 鼠标hover颜色
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            borderWidth: 0
+          }
         }
       }
-    },
+    ],
     series: [
       {
         name: '数据预览',
@@ -604,6 +824,7 @@ onMounted(() => {
   flex-direction: column;
   width: 100%;
   height: 100vh;
+  background: rgb(1, 18, 48);
   position: relative;
   overflow: hidden;
 }
@@ -676,13 +897,14 @@ h2 {
   height: 40px;
   line-height: 40px;
   padding: 0 20px;
-  color: #fff;
+  color: rgb(0, 244, 254);
   font-size: 18px;
-  background: linear-gradient(to right, #77a2fc, #e0ecfc);
+  background: linear-gradient(to right, rgb(1, 71, 227), rgb(1, 27, 59));
   border-radius: 4px;
 }
 .echarts {
   flex: 1;
+  border: 1px solid rgb(1, 40, 92);
 }
 
 .ranking {
@@ -702,11 +924,19 @@ h2 {
   width: 160px;
 }
 
+.el-table {
+  color: #fff;
+}
 .el-table thead {
-  color: #77a2fc;
+  color: rgb(0, 244, 254);
   font-weight: bold;
 }
-.el-table {
-  color: #4f7bd8;
+.el-table,
+.el-table tr,
+.el-table th.el-table__cell {
+  background: none !important;
+}
+.el-table .el-table__row:hover > td {
+  background-color: #000; /* 自定义的 hover 背景颜色 */
 }
 </style>
