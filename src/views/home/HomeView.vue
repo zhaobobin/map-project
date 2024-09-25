@@ -1,33 +1,37 @@
 <template>
   <div class="container">
     <div class="header">
+      <div class="logo">LOGO</div>
       <h1>智慧模拟虚拟实验室平台</h1>
+      <div class="date">
+        <p>2022年6月10日 星期五 14:59</p>
+      </div>
     </div>
     <div class="main">
       <div class="left">
         <div class="section">
-          <h2>使用时常统计</h2>
+          <h2>课程使用总时长统计</h2>
           <div class="echarts" ref="echartsLeft1"></div>
         </div>
         <div class="section">
-          <h2>近一周使用次数</h2>
+          <h2>在线状态统计</h2>
           <div class="echarts" ref="echartsLeft2"></div>
         </div>
-        <div class="section">
+        <!-- <div class="section">
           <h2>近一周使用时长</h2>
           <div class="echarts" ref="echartsLeft3"></div>
-        </div>
+        </div> -->
       </div>
       <div class="center">
-        <div class="data">
+        <div class="center-data">
           <ul>
             <li v-for="item in centerData" :key="item.value">
-              <p class="label">{{ item.label }}</p>
-              <p class="value">{{ item.value }}</p>
+              <p class="label">{{ item.value }}</p>
+              <p class="value">{{ item.label }}</p>
             </li>
           </ul>
         </div>
-        <div class="echarts" ref="echartsCenter"></div>
+        <div class="center-map echarts" ref="echartsCenter"></div>
         <div class="center-rank">
           <el-table :data="centerRank" style="width: 100%" height="150">
             <el-table-column prop="index" label="排名" width="100" align="center" />
@@ -77,10 +81,11 @@ const echartsRight2 = ref()
 const echartsRight3 = ref()
 
 const centerData = ref([
-  { label: '接入课程数', value: '(6个)' },
-  { label: '学员人数', value: '(200人)' },
-  { label: '学习总时长', value: '(600小时)' },
-  { label: '模拟通过率', value: '72%' }
+  { label: '医院数', value: '210' },
+  { label: '课程数', value: '34,255' },
+  { label: '学习人数', value: '8,234' },
+  { label: '学习总时长', value: '564,234' },
+  { label: '模拟通过率', value: '90%' }
 ])
 
 const centerRank = ref([
@@ -134,53 +139,86 @@ const dataList = [
 function initLeft1() {
   const chart = echarts.init(echartsLeft1.value)
   const option = {
-    tooltip: {
-      trigger: 'item'
+    grid: {
+      left: '5%',
+      right: '5%',
+      bottom: '5%',
+      top: '10%',
+      containLabel: true
     },
-    legend: {
-      icon: 'square',
-      orient: 'vertical',
-      left: '3%',
-      top: 'center',
-      textStyle: {
+    xAxis: {
+      show: false
+    },
+    yAxis: {
+      // show: false
+      type: 'category',
+      data: ['1 北一三院', '2 北一三院', '3 北一三院', '4 北一三院', '5 北一三院', '6 北一三院'],
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: false
+      },
+      axisLabel: {
+        show: true,
+        fontSize: 12,
         color: '#fff'
+        // color: function (value, index) {
+        //   if (index == 0) {
+        //     return 'red'
+        //   }
+        //   if (index == 1) {
+        //     return '#ff8447'
+        //   }
+        //   if (index == 2) {
+        //     return '#ffcc00'
+        //   }
+        //   return 'rgb(18,205,12)'
+        // },
       }
     },
-    color: ['#a7b3fa', '#81b4fc', '#5475f5', '#83d8fb'],
     series: [
       {
-        name: '时长统计',
-        type: 'pie',
-        radius: ['60%', '85%'],
-        center: ['68%', '55%'],
-        avoidLabelOverlap: false,
+        type: 'bar',
+        stack: 'chart',
+        barWidth: '14',
+        showBackground: true,
         itemStyle: {
-          borderRadius: 2,
-          borderColor: '#fff',
-          borderWidth: 1
-        },
-        label: {
-          show: false, // 开启标签显示
-          position: 'inside',
-          formatter: '{c}' // 自定义标签格式化函数 {b}: {c} ({d}%)
-        },
-        emphasis: {
-          label: {
-            // show: false,
-            fontSize: 40,
-            fontWeight: 'bold'
+          normal: {
+            color: new echarts.graphic.LinearGradient(1, 0, 0, 1, [
+              {
+                offset: 0,
+                color: '#FF5E48'
+              },
+              {
+                offset: 1,
+                color: '#FF5E4800'
+              }
+            ])
           }
         },
-        labelLine: {
-          show: false
+        label: {
+          normal: {
+            // position: 'left',
+            fontSize: 10,
+            show: true,
+            color: 'white',
+            formatter: '{c}%'
+          }
         },
-        data: [
-          { value: 150, name: '新生儿重症监护' },
-          { value: 120, name: '简易呼吸机使用' },
-          { value: 100, name: '鼻饲法虚实结合系统' },
-          { value: 110, name: '其他' }
-        ]
+        data: [3805, 2805, 1805, 1805, 1805, 1805]
       }
+      // {
+      //   type: 'bar',
+      //   stack: 'chart',
+      //   barWidth: '24',
+      //   itemStyle: {
+      //     normal: {
+      //       color: '#0D2253'
+      //     }
+      //   },
+      //   data: [40, 35, 30, 32, 28, 24, 20, 34, 40, 20, 32, 18]
+      // }
     ]
   }
   chart.setOption(option)
@@ -274,7 +312,7 @@ function initCenter() {
       // }
     },
     visualMap: {
-      show: true,
+      show: false,
       left: 20,
       bottom: 40,
       showLabel: true,
@@ -809,12 +847,12 @@ function initRight3() {
 onMounted(() => {
   echarts.registerMap('china', { geoJSON: chinaMap })
   initLeft1()
-  initLeft2()
-  initLeft3()
+  // initLeft2()
+  // initLeft3()
   initCenter()
   // initRight1()
   initRight2()
-  initRight3()
+  // initRight3()
 })
 </script>
 
@@ -825,19 +863,53 @@ onMounted(() => {
   width: 100%;
   height: 100vh;
   background: url(../../assets/images/bg.jpg) center center no-repeat;
-  background-size: 100% auto;
+  background-size: 100% 100%;
   position: relative;
   overflow: hidden;
 }
 .header {
-  height: 50px;
-  line-height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 130px;
+  line-height: 80px;
   text-align: center;
+  background: url(../../assets/images/header_bg.png) center top no-repeat;
+  background-size: auto 90%;
+}
+.logo {
+  width: 540px;
+  height: 100%;
+  color: #fff;
+  font-size: 36px;
+  text-align: left;
+  padding: 0 20px;
 }
 h1 {
-  color: #5475f5;
+  display: inline-block;
+  background: linear-gradient(180deg, #ffffff 0%, #8bceff 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* Chrome, Safari */
+  color: transparent;
   font-weight: bold;
+  font-size: 36px;
 }
+.date {
+  width: 540px;
+  height: 100%;
+  padding: 46px 20px 0;
+  p {
+    height: 56px;
+    line-height: 56px;
+    padding-left: 20px;
+    text-align: left;
+    font-size: 28px;
+    color: #b9f2ff;
+    background: url(../../assets/images/date_bg.png) left center no-repeat;
+    background-size: auto 100%;
+  }
+}
+
 .main {
   flex: 1;
   display: flex;
@@ -846,7 +918,8 @@ h1 {
 
 .left,
 .right {
-  width: 450px;
+  width: 540px;
+  padding: 0 20px 10px;
 }
 
 .left {
@@ -861,27 +934,34 @@ h1 {
   flex-direction: column;
   position: relative;
 }
-.center .data {
+.center .center-data {
   width: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 9;
+  height: 130px;
+  background: url(../../assets/images/center_data_bg.png) center center no-repeat;
+  background-size: 100% 100%;
 }
-.center .data ul {
+.center .center-data ul {
   display: flex;
   padding: 20px;
 }
-.center .data ul li {
+.center .center-data ul li {
+  flex: 1;
+  text-align: center;
+}
+.center .center-data ul li .label {
+  color: #00f7ff;
+  font-weight: bold;
+  font-size: 28px;
+}
+.center .center-data ul li .value {
+  color: #fff;
+  font-size: 16px;
+}
+
+.center-map {
   flex: 1;
 }
-.center .data ul li .label {
-  color: #77a2fc;
-  font-weight: bold;
-}
-.center .data ul li .value {
-  color: #4f7bd8;
-}
+
 .center-rank {
   height: 170px;
   padding-bottom: 20px;
@@ -896,20 +976,21 @@ h1 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 0 20px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 19.27px 0px #0069ff66 inset;
 }
 h2 {
-  height: 40px;
-  line-height: 40px;
+  height: 48px;
+  line-height: 48px;
   padding: 0 20px;
   color: rgb(0, 244, 254);
   font-size: 18px;
-  background: linear-gradient(to right, rgb(1, 71, 227), rgb(1, 27, 59));
+  background: url(../../assets/images/h2_bg.png) left center no-repeat;
+  background-size: 100% 100%;
   border-radius: 4px;
 }
 .echarts {
   flex: 1;
-  border: 1px solid rgb(1, 40, 92);
 }
 
 .ranking {
