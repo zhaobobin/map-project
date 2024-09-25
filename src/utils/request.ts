@@ -32,7 +32,7 @@ service.interceptors.response.use(
       return res
     } else {
       if (res.code === 401) {
-        router.push('/')
+        // router.push('/')
       }
       return res
     }

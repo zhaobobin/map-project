@@ -824,7 +824,8 @@ onMounted(() => {
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background: rgb(1, 18, 48);
+  background: url(../../assets/images/bg.jpg) center center no-repeat;
+  background-size: 100% auto;
   position: relative;
   overflow: hidden;
 }
@@ -842,14 +843,19 @@ h1 {
   display: flex;
   flex-direction: row;
 }
+
+.left,
+.right {
+  width: 450px;
+}
+
 .left {
-  width: 27%;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 .center {
-  width: 46%;
+  flex: 1;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -882,7 +888,6 @@ h1 {
 }
 
 .right {
-  width: 27%;
   height: 100%;
   display: flex;
   flex-direction: column;
