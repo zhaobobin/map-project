@@ -69,7 +69,7 @@
 
 <script setup lang="js">
 import { ref, onMounted } from 'vue'
-import chinaMap from 'echarts/map/json/china.json'
+import chinaMap from '@/assets/map/json/china.json'
 import * as echarts from 'echarts'
 
 const echartsLeft1 = ref()
